@@ -125,15 +125,9 @@
         // Android: Open in Scene Viewer
         window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelPathGLB}#Intent;scheme=https;package=com.google.ar.core;end;`;
       } else if (isIOS) {
-        // iOS: Use AR Quick Look
-        const arViewer = document.createElement('model-viewer');
-        arViewer.setAttribute('ios-src', modelPathUSDZ);
-        arViewer.setAttribute('ar', '');
-        arViewer.setAttribute('ar-modes', 'quick-look');
-        document.body.appendChild(arViewer);
-
-        // Trigger AR Quick Look
-        arViewer.activateAR();
+        // iOS: Open USDZ in AR Quick Look directly
+        const quickLookURL = `${modelPathUSDZ}`;
+        window.location.href = quickLookURL;
       } else {
         alert('AR is not supported on your device.');
       }
