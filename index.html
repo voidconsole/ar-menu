@@ -214,17 +214,26 @@
     const menuContainer = document.getElementById('menuItems');
     const searchBar = document.getElementById('searchBar');
     const vegOnlyToggle = document.getElementById('vegOnlyToggle');
-	function openAR(modelPath) {
-    const isAndroid = navigator.userAgent.indexOf('Android') > -1;
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isAndroid) {
-      window.location = `intent://arvr.google.com/scene-viewer/1.0?file=${modelPath}#Intent;scheme=https;package=com.google.ar.core;end;`;
-    } else if (isIOS) {
-      window.location = `quick-look://${modelPath}`;
-    } else {
-      alert('AR viewing is not supported on this device.');
-    }
+	function openARModel(modelPathGLB, modelPathUSDZ) {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  // Check for iOS devices
+  const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+  // Check for Android devices
+  const isAndroid = /Android/i.test(userAgent);
+
+  if (isAndroid) {
+    // Use Google's Scene Viewer for Android with GLB/GLTF file
+    window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelPathGLB}#Intent;scheme=https;package=com.google.ar.core;end;`;
+  } else if (isIOS) {
+    // Use Apple's AR Quick Look for iOS with USDZ file
+    window.location.href = `${modelPathUSDZ}`;
+  } else {
+    // Fallback for unsupported devices
+    alert('AR is not supported on your device.');
   }
+}
+
 
     function renderMenu(filter = '') {
       const searchTerm = searchBar.value.toLowerCase();
@@ -243,7 +252,7 @@
               <strong>₹${item.price}/-</strong>
             </div>
             <div class="card-action">
-              <button onclick="openAR('path/to/model.glb')">View in AR</button>
+              <button onclick="openARModel('https://example.com/model.glb', 'https://example.com/model.usdz')">View in AR</button>
             </div>
           </div>
         `)
