@@ -227,12 +227,21 @@
     window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelPathGLB}#Intent;scheme=https;package=com.google.ar.core;end;`;
   } else if (isIOS) {
     // Use Apple's AR Quick Look for iOS with USDZ file
-    window.location.href = `${modelPathUSDZ}`;
+    const arViewer = document.createElement('model-viewer');
+    arViewer.setAttribute('ios-src', modelPathUSDZ);
+    arViewer.setAttribute('ar', '');
+    arViewer.setAttribute('ar-modes', 'quick-look');
+    arViewer.setAttribute('style', 'display: none;');
+    document.body.appendChild(arViewer);
+
+    // Activate Quick Look
+    arViewer.activateAR();
   } else {
     // Fallback for unsupported devices
     alert('AR is not supported on your device.');
   }
 }
+
 
 
     function renderMenu(filter = '') {
