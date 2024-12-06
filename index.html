@@ -173,7 +173,15 @@
   </style>
 </head>
 <body>
-
+<model-viewer
+      id="arViewer"
+      ios-src="./123.usdz"
+      alt="3D model in AR"
+      ar
+      ar-modes="quick-look" <!-- iOS AR Quick Look -->
+      style="display: none; width: 100%; height: 100%;"
+      camera-controls
+    ></model-viewer>
   <div class="header">
     <div class="menu-toggle">
       <label>
@@ -227,15 +235,10 @@
     window.location.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelPathGLB}#Intent;scheme=https;package=com.google.ar.core;end;`;
   } else if (isIOS) {
     // Use Apple's AR Quick Look for iOS with USDZ file
-    const arViewer = document.createElement('model-viewer');
-    arViewer.setAttribute('ios-src', modelPathUSDZ);
-    arViewer.setAttribute('ar', '');
-    arViewer.setAttribute('ar-modes', 'quick-look');
-    arViewer.setAttribute('style', 'display: none;');
-    document.body.appendChild(arViewer);
-
-    // Activate Quick Look
-    arViewer.activateAR();
+    const arViewer = document.getElementById('arViewer');
+    arViewer.style.display = 'block';
+      // Quick Look AR on iOS will automatically open when this is clicked
+      arViewer.activateAR();
   } else {
     // Fallback for unsupported devices
     alert('AR is not supported on your device.');
